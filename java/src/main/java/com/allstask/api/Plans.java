@@ -1,0 +1,202 @@
+// this file is @generated
+package com.allstask.api;
+
+import com.allstask.AllstaskHttpClient;
+import com.allstask.Utils;
+import com.allstask.exceptions.ApiException;
+import com.allstask.models.CreatePlanRequest;
+import com.allstask.models.MinimumCommitment;
+import com.allstask.models.PatchPlanRequest;
+import com.allstask.models.Plan;
+import com.allstask.models.PlanListResponse;
+import com.allstask.models.PlanVersionListResponse;
+import com.allstask.models.ReplacePlanRequest;
+import com.allstask.models.ResolvedEntitlementListResponse;
+
+import okhttp3.HttpUrl;
+
+import java.io.IOException;
+
+public class Plans {
+    private final AllstaskHttpClient client;
+
+    public Plans(AllstaskHttpClient client) {
+        this.client = client;
+    }
+
+    /** */
+    public ResolvedEntitlementListResponse listPlanVersionEntitlements(final String planVersionId)
+            throws IOException, ApiException {
+        HttpUrl.Builder url =
+                this.client
+                        .newUrlBuilder()
+                        .encodedPath(
+                                String.format(
+                                        "/api/v1/plan-versions/%s/entitlements", planVersionId));
+        return this.client.executeRequest(
+                "GET", url.build(), null, null, ResolvedEntitlementListResponse.class);
+    }
+
+    /** */
+    public PlanListResponse listPlans() throws IOException, ApiException {
+
+        return this.listPlans(new PlansListPlansOptions());
+    }
+
+    /** */
+    public PlanListResponse listPlans(final PlansListPlansOptions options)
+            throws IOException, ApiException {
+        HttpUrl.Builder url = this.client.newUrlBuilder().encodedPath("/api/v1/plans");
+        if (options.productFamilyId != null) {
+            url.addQueryParameter(
+                    "product_family_id", Utils.serializeQueryParam(options.productFamilyId));
+        }
+        if (options.search != null) {
+            url.addQueryParameter("search", options.search);
+        }
+        if (options.status != null) {
+            Utils.addExplodedQueryParameter(url, "status", options.status);
+        }
+        if (options.planType != null) {
+            Utils.addExplodedQueryParameter(url, "plan_type", options.planType);
+        }
+        if (options.orderBy != null) {
+            url.addQueryParameter("order_by", options.orderBy);
+        }
+        if (options.page != null) {
+            url.addQueryParameter("page", Utils.serializeQueryParam(options.page));
+        }
+        if (options.perPage != null) {
+            url.addQueryParameter("per_page", Utils.serializeQueryParam(options.perPage));
+        }
+        return this.client.executeRequest("GET", url.build(), null, null, PlanListResponse.class);
+    }
+
+    /**
+     * Create a new plan with components and pricing. Set `status` to `ACTIVE` to publish
+     * immediately, or `DRAFT` to stage for review.
+     */
+    public Plan createPlan(final CreatePlanRequest createPlanRequest)
+            throws IOException, ApiException {
+        HttpUrl.Builder url = this.client.newUrlBuilder().encodedPath("/api/v1/plans");
+        return this.client.executeRequest("POST", url.build(), null, createPlanRequest, Plan.class);
+    }
+
+    /** */
+    public MinimumCommitment setPlanMinimum(
+            final String planVersionId, final MinimumCommitment minimumCommitment)
+            throws IOException, ApiException {
+        HttpUrl.Builder url =
+                this.client
+                        .newUrlBuilder()
+                        .encodedPath(
+                                String.format("/api/v1/plans/versions/%s/minimum", planVersionId));
+        return this.client.executeRequest(
+                "PUT", url.build(), null, minimumCommitment, MinimumCommitment.class);
+    }
+
+    /** */
+    public void deletePlanMinimum(final String planVersionId) throws IOException, ApiException {
+        HttpUrl.Builder url =
+                this.client
+                        .newUrlBuilder()
+                        .encodedPath(
+                                String.format("/api/v1/plans/versions/%s/minimum", planVersionId));
+        this.client.executeRequest("DELETE", url.build(), null, null, null);
+    }
+
+    /**
+     * Retrieve a specific plan. Use `?version=draft` for the draft version, `?version=2` for a
+     * specific version number, or omit for the active version.
+     */
+    public Plan getPlanDetails(final String planId) throws IOException, ApiException {
+        return this.getPlanDetails(planId, new PlansGetPlanDetailsOptions());
+    }
+
+    /**
+     * Retrieve a specific plan. Use `?version=draft` for the draft version, `?version=2` for a
+     * specific version number, or omit for the active version.
+     */
+    public Plan getPlanDetails(final String planId, final PlansGetPlanDetailsOptions options)
+            throws IOException, ApiException {
+        HttpUrl.Builder url =
+                this.client.newUrlBuilder().encodedPath(String.format("/api/v1/plans/%s", planId));
+        if (options.version != null) {
+            url.addQueryParameter("version", options.version);
+        }
+        return this.client.executeRequest("GET", url.build(), null, null, Plan.class);
+    }
+
+    /**
+     * Full replacement of a plan's version. On a draft plan, updates in-place. On a published plan,
+     * creates a new version. Set `status` to `DRAFT` to stage as a new draft without publishing.
+     */
+    public Plan replacePlan(final String planId, final ReplacePlanRequest replacePlanRequest)
+            throws IOException, ApiException {
+        HttpUrl.Builder url =
+                this.client.newUrlBuilder().encodedPath(String.format("/api/v1/plans/%s", planId));
+        return this.client.executeRequest("PUT", url.build(), null, replacePlanRequest, Plan.class);
+    }
+
+    /**
+     * Partially update plan-level fields (name, description, self_service_rank). Does not modify
+     * version-level configuration or components.
+     */
+    public Plan patchPlan(final String planId, final PatchPlanRequest patchPlanRequest)
+            throws IOException, ApiException {
+        HttpUrl.Builder url =
+                this.client.newUrlBuilder().encodedPath(String.format("/api/v1/plans/%s", planId));
+        return this.client.executeRequest("PATCH", url.build(), null, patchPlanRequest, Plan.class);
+    }
+
+    /** */
+    public void archivePlan(final String planId) throws IOException, ApiException {
+        HttpUrl.Builder url =
+                this.client
+                        .newUrlBuilder()
+                        .encodedPath(String.format("/api/v1/plans/%s/archive", planId));
+        this.client.executeRequest("POST", url.build(), null, null, null);
+    }
+
+    /** Publishes the current draft version, making it the active version. */
+    public Plan publishPlan(final String planId) throws IOException, ApiException {
+        HttpUrl.Builder url =
+                this.client
+                        .newUrlBuilder()
+                        .encodedPath(String.format("/api/v1/plans/%s/publish", planId));
+        return this.client.executeRequest("POST", url.build(), null, null, Plan.class);
+    }
+
+    /** */
+    public void unarchivePlan(final String planId) throws IOException, ApiException {
+        HttpUrl.Builder url =
+                this.client
+                        .newUrlBuilder()
+                        .encodedPath(String.format("/api/v1/plans/%s/unarchive", planId));
+        this.client.executeRequest("POST", url.build(), null, null, null);
+    }
+
+    /** */
+    public PlanVersionListResponse listPlanVersions(final String planId)
+            throws IOException, ApiException {
+        return this.listPlanVersions(planId, new PlansListPlanVersionsOptions());
+    }
+
+    /** */
+    public PlanVersionListResponse listPlanVersions(
+            final String planId, final PlansListPlanVersionsOptions options)
+            throws IOException, ApiException {
+        HttpUrl.Builder url =
+                this.client
+                        .newUrlBuilder()
+                        .encodedPath(String.format("/api/v1/plans/%s/versions", planId));
+        if (options.page != null) {
+            url.addQueryParameter("page", Utils.serializeQueryParam(options.page));
+        }
+        if (options.perPage != null) {
+            url.addQueryParameter("per_page", Utils.serializeQueryParam(options.perPage));
+        }
+        return this.client.executeRequest(
+                "GET", url.build(), null, null, PlanVersionListResponse.class);
+    }
+}

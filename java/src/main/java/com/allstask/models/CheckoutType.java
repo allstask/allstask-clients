@@ -1,0 +1,27 @@
+// This file is @generated
+package com.allstask.models;
+
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.allstask.Utils.ToQueryParam;
+
+public enum CheckoutType implements ToQueryParam {
+    SELF_SERVE("SELF_SERVE"),
+    SUBSCRIPTION_ACTIVATION("SUBSCRIPTION_ACTIVATION"),
+    PLAN_CHANGE("PLAN_CHANGE"),
+    ADDON_PURCHASE("ADDON_PURCHASE");
+    private final String value;
+
+    CheckoutType(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+        return this.value;
+    }
+
+    @Override
+    public String toQueryParam() {
+        return this.value;
+    }
+}

@@ -1,0 +1,74 @@
+{% set _ = set_summary_filename("Allstask.java") -%}
+// this file is @generated
+package com.allstask;
+
+import com.allstask.api.*;
+
+import lombok.Getter;
+
+import okhttp3.HttpUrl;
+
+import java.util.Map;
+
+/**
+ * Main entry point for the Allstask Java SDK.
+ *
+ * <p>This class provides access to all Allstask API resources through a fluent interface.
+ *
+ * <p>Example usage:
+ * <pre>{@code
+ * // Initialize with API key
+ * Allstask allstask = new Allstask("your-api-key");
+ *
+ * // Or with custom options
+ * AllstaskOptions options = new AllstaskOptions();
+ * options.setServerUrl("https://custom.api.allstask.com");
+ * Allstask allstask = new Allstask("your-api-key", options);
+ *
+ * // Access API resources
+ * CustomerListResponse customers = allstask.getCustomer().listCustomers();
+ * }</pre>
+ */
+@Getter
+public class Allstask {
+{% for resource in api.resources %}
+    private final {{ resource.name | to_upper_camel_case }} {{ resource.name | to_lower_camel_case }};
+{% endfor %}
+
+    /**
+     * Create a new Allstask client with default options.
+     *
+     * @param apiKey Your Allstask API key
+     */
+    public Allstask(String apiKey) {
+        this(apiKey, new AllstaskOptions());
+    }
+
+    /**
+     * Create a new Allstask client with custom options.
+     *
+     * @param apiKey Your Allstask API key
+     * @param options Configuration options for the client
+     */
+    public Allstask(String apiKey, AllstaskOptions options) {
+        HttpUrl parsedUrl = HttpUrl.parse(options.getServerUrl());
+        if (parsedUrl == null) {
+            throw new IllegalArgumentException("Invalid server URL: " + options.getServerUrl());
+        }
+
+        Map<String, String> defaultHeaders = Map.of(
+                "User-Agent", "allstask-java/" + Version.VERSION,
+                "Authorization", "Bearer " + apiKey
+        );
+
+        AllstaskHttpClient httpClient = new AllstaskHttpClient(
+                parsedUrl,
+                defaultHeaders,
+                options.getRetrySchedule()
+        );
+
+{% for resource in api.resources %}
+        this.{{ resource.name | to_lower_camel_case }} = new {{ resource.name | to_upper_camel_case }}(httpClient);
+{% endfor %}
+    }
+}
