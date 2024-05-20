@@ -4,7 +4,7 @@ version = "0.25.0"
 edition = "2021"
 license = "MIT"
 description = "Allstask Billing SDK for Rust"
-repository = "https://github.com/allstask-oss/allstask"
+repository = "https://github.com/allstask/allstask"
 keywords = ["allstask", "billing", "subscription", "api"]
 categories = ["api-bindings"]
 

@@ -35,7 +35,7 @@ except ImportError:
 
 # Default image - can be overridden with IMAGE env var
 # For local development, build with: docker build -t allstask-codegen codegen/
-OPENAPI_CODEGEN_IMAGE = os.getenv("IMAGE", "ghcr.io/allstask-oss/openapi-codegen:latest")
+OPENAPI_CODEGEN_IMAGE = os.getenv("IMAGE", "ghcr.io/allstask/openapi-codegen:latest")
 DEBUG = os.getenv("DEBUG") is not None
 GREEN = "\033[92m"
 BLUE = "\033[94m"
