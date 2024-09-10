@@ -147,11 +147,11 @@ public class WebhookTest {
 
     @Test
     public void verifyWebhookSignWorks() throws WebhookSigningException {
-        String key = "whsec_MfKQ9r8GKYqrTwjUPD8ILPZIo2LaLaSw";
+        String key = "whsec_REVNT19TRUNSRVRfRk9SX1VOSVRfVEVTVF9PTkxZ";
         String msgId = "msg_p5jXN8AQM9LWM0D4loKWxJek";
         final long timestamp = 1614265330;
         String payload = "{\"test\": 2432232314}";
-        String expected = "v1,g0hM9SsE+OTPJTGt/tmIKtSyZlE3uFJELVlNIOLJ1OE=";
+        String expected = "v1,Td+JHbCeVbNXZUdPt7FLsrTNUnlKaEzhdL94zgZIwPk=";
 
         Webhook webhook = new Webhook(key);
         String signature = webhook.sign(msgId, timestamp, payload);
