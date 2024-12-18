@@ -1,0 +1,110 @@
+// this file is @generated
+import {
+    CancelCheckoutSessionResponse,
+    CancelCheckoutSessionResponseSerializer,
+} from '../models/cancelCheckoutSessionResponse';
+import {
+    CheckoutSessionStatus,
+    CheckoutSessionStatusSerializer,
+} from '../models/checkoutSessionStatus';
+import {
+    CreateCheckoutSessionRequest,
+    CreateCheckoutSessionRequestSerializer,
+} from '../models/createCheckoutSessionRequest';
+import {
+    CreateCheckoutSessionResponse,
+    CreateCheckoutSessionResponseSerializer,
+} from '../models/createCheckoutSessionResponse';
+import {
+    CustomerId,
+    CustomerIdSerializer,
+} from '../models/customerId';
+import {
+    GetCheckoutSessionResponse,
+    GetCheckoutSessionResponseSerializer,
+} from '../models/getCheckoutSessionResponse';
+import {
+    ListCheckoutSessionsResponse,
+    ListCheckoutSessionsResponseSerializer,
+} from '../models/listCheckoutSessionsResponse';
+import { HttpMethod, AllstaskRequest, AllstaskRequestContext } from "../request";
+
+export interface CheckoutSessionsListCheckoutSessionsOptions {
+        customerId?: CustomerId;
+        status?: CheckoutSessionStatus;
+        }
+
+    export class CheckoutSessions {
+    public constructor(private readonly requestCtx: AllstaskRequestContext) {}
+
+    /**  */
+        public listCheckoutSessions(
+            options?: CheckoutSessionsListCheckoutSessionsOptions,
+            ): Promise<ListCheckoutSessionsResponse> {
+            const request = new AllstaskRequest(HttpMethod.GET, "/api/v1/checkout-sessions");
+
+            request.setQueryParam("customer_id", options?.customerId);
+            request.setQueryParam("status", options?.status);
+            
+                return request.send(
+                    this.requestCtx,
+                    ListCheckoutSessionsResponseSerializer._fromJsonObject,
+                );
+            }
+
+        
+
+    /**  */
+        public createCheckoutSession(
+            createCheckoutSessionRequest: CreateCheckoutSessionRequest,
+            ): Promise<CreateCheckoutSessionResponse> {
+            const request = new AllstaskRequest(HttpMethod.POST, "/api/v1/checkout-sessions");
+
+            request.setBody(
+                    CreateCheckoutSessionRequestSerializer._toJsonObject(
+                        createCheckoutSessionRequest,
+                    )
+                );
+            
+                return request.send(
+                    this.requestCtx,
+                    CreateCheckoutSessionResponseSerializer._fromJsonObject,
+                );
+            }
+
+        
+
+    /**  */
+        public getCheckoutSession(
+            id: string,
+            ): Promise<GetCheckoutSessionResponse> {
+            const request = new AllstaskRequest(HttpMethod.GET, "/api/v1/checkout-sessions/{id}");
+
+            request.setPathParam("id", id);
+            
+                return request.send(
+                    this.requestCtx,
+                    GetCheckoutSessionResponseSerializer._fromJsonObject,
+                );
+            }
+
+        
+
+    /**  */
+        public cancelCheckoutSession(
+            id: string,
+            ): Promise<CancelCheckoutSessionResponse> {
+            const request = new AllstaskRequest(HttpMethod.POST, "/api/v1/checkout-sessions/{id}/cancel");
+
+            request.setPathParam("id", id);
+            
+                return request.send(
+                    this.requestCtx,
+                    CancelCheckoutSessionResponseSerializer._fromJsonObject,
+                );
+            }
+
+        
+
+    }
+

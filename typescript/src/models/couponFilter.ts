@@ -1,0 +1,19 @@
+// this file is @generated
+/* eslint @typescript-eslint/no-explicit-any: 0 */
+
+export enum CouponFilter {
+    All = 'ALL',
+    Active = 'ACTIVE',
+    Inactive = 'INACTIVE',
+    Archived = 'ARCHIVED',
+    }
+
+export const CouponFilterSerializer = {
+    _fromJsonObject(object: any): CouponFilter {
+        return object;
+    },
+
+    _toJsonObject(self: CouponFilter): any {
+        return self;
+    }
+}

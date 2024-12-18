@@ -30,13 +30,13 @@ output_dir = "java/src/main/java/com/allstask"
 template = "templates/java/component_type.java.jinja"
 output_dir = "java/src/main/java/com/allstask/models"
 
-# [typescript]
-# [[typescript.task]]
-# template = "templates/typescript/api_resource.ts.jinja"
-# output_dir = "typescript/src/api"
-# [[typescript.task]]
-# template = "templates/typescript/component_type_summary.ts.jinja"
-# output_dir = "typescript/src/models"
-# [[typescript.task]]
-# template = "templates/typescript/component_type.ts.jinja"
-# output_dir = "typescript/src/models"
+[typescript]
+[[typescript.task]]
+template = "templates/typescript/api_resource.ts.jinja"
+output_dir = "typescript/src/api"
+[[typescript.task]]
+template = "templates/typescript/component_type_summary.ts.jinja"
+output_dir = "typescript/src/models"
+[[typescript.task]]
+template = "templates/typescript/component_type.ts.jinja"
+output_dir = "typescript/src/models"
